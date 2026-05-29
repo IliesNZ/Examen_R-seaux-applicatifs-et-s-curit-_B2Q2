@@ -89,6 +89,6 @@ Postfix est un serveur de messagerie (MTA) très courant sous Linux.
 <br>
 
 <p style="display:flex;justify-content:space-between;align-items:center;">
-<a href="../Chapitre-2/Examen.md">⬅️ Vers le chapitre précédent</a>
+<a href="../Chapitre-2/Examen.md">⬅️ Vers le chapitre précédent</a> | 
 <a href="../Chapitre-4/Examen.md">Chapitre suivant ➡️</a>
 </p>
