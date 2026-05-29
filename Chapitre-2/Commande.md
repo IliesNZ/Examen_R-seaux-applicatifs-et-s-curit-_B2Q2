@@ -18,12 +18,12 @@
     Ini, TOML
 
     [DEFAULT] [cite: 162]
-    bantime = &lt;long enough&gt; [cite: 163]
-    findtime = &lt;time during retry are counted&gt; [cite: 164]
-    maxretry = &lt;n&gt; [cite: 165]
+    bantime = <long enough> [cite: 163]
+    findtime = <time during retry are counted> [cite: 164]
+    maxretry = <n> [cite: 165]
     action = %(action_mw)s [cite: 166]
 
-    [&lt;service&gt;] [cite: 167]
+    [<service>] [cite: 167]
     enabled = true [cite: 168]
 
 ### Commandes client & Firewall
@@ -59,6 +59,18 @@
 - /var/lib/tripwire/report : Dossier contenant les rapports générés au format .twr.  
 - twprint -m r --twrfile /var/lib/tripwire/report/&lt;host&gt;-&lt;date&gt;.twr : Commande pour lire le rapport généré en clair.  
 
+## Portsentry (Slide 25) :
+
+### Dans le fichier /etc/portsentry/portsentry.conf:  
+    
+    BLOCK_UDP="1"   
+    BLOCK_TCP="1"   
+    KILL_RUN_CMD=/sbin/iptables   
+
+### Dans le fichier /etc/default/portsentry:  
+    
+    TCP_MODE="atcp"   
+    UDP_MODE="audp"   
 
 <br>
 
