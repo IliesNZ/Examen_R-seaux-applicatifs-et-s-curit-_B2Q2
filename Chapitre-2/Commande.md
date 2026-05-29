@@ -1,119 +1,70 @@
-# Chapitre 2 : IDS|IPS (Commandes)
 
-## Analyse des logs (Slide 8) :
+# Chapitre 2 : IDS|IPS
 
-### Expression régulière (pattern) d'exemple pour l'analyse des logs :
+### Slide 8/26 : Surveillance des logs
+* `^\w{3} [ :0-9]{11} [.[:alnum:]-]+ SSMTP\[[0-9]+\]: Sent mail\ for . $*\backslash([\Theta-9]+[\Theta-9.]+$ Bye\) uid=[0-9]+ username=[\._[:alnum:]\ -]+ outbytes=[0-9]+\$` : Expression régulière d'exemple.
 
-- logcheck (lancé toutes les heures) 
-- logwatch (lancé une fois par jour) 
+### Slide 10/26 : fail2ban
+* Fichiers de configuration globaux : `/etc/fail2ban/{fail2ban.conf,jail.conf,filter.d,action.d}`.
+* Fichier de configuration locale : `/etc/fail2ban/jail.local`.
 
-lisent les fichiers de logs et envoient des alertes dès qu'une ligne de log correspond à un
-pattern.
+### Slide 11/26 : fail2ban - Configuration
+* Exemple de configuration:
+    [DEFAULT]
+    bantime = <long enough>
+    findtime = <time during retry are counted>
+    maxretry = <n>
+    action = %(action_mw)s
+    [<service>]
+    enabled = true
 
-    ^\w{3} [ :0-9]{11} [.[:alnum:]-]+ SSMTP\[[0-9]+\]: Sent mail\ for . $*\backslash([\Theta-9]+[\Theta-9.]+$ Bye\) uid=[0-9]+ username=[\._[:alnum:]\ -]+ outbytes=[0-9]+\$   
+### Slide 12/26 : fail2ban - Client
+* `fail2ban-client status` : Affiche le statut général.
+* `fail2ban-client status <JAIL>` : Affiche le statut d'une prison.
+* `fail2ban-client set loglevel <LEVEL>` : Modifie le niveau de log.
+* `fail2ban-client get loglevel` : Affiche le niveau de log.
+* `fail2ban-client set <JAIL> [un]banip <IP>` : Banni / débanni une IP.
+* `fail2ban-client set <JAIL> <add|del>ignoreip <IP>` : Gère l'ignorance d'IP.
+* `iptables -L` : Montre toutes les règles du firewall.
 
-## Fail2ban (Slide 10-12)
+### Slide 14/26 : tripwire - Introduction
+* `$sha512sum /etc/hosts` : Comparaison de hash.
 
-### Fichier de configuration :
+### Slide 15/26 : tripwire - Clés
+* `twadmin --generate-keys -L /etc/tripwire/<host>-local.key`.
+* `twadmin --generate-keys -L /etc/tripwire/site.key`.
 
-- Configurations globales : /etc/fail2ban/{fail2ban.conf,jail.conf,filter.d,action.d}   
-- Configuration locale (à privilégier pour l'écriture) : /etc/fail2ban/jail.local   
+### Slide 16/26 : tripwire - Configuration
+* Fichier source pour configuration : `/etc/tripwire/twcfg.txt`.
+* Fichier source pour les règles : `/etc/tripwire/twpol.txt`.
 
-### Exemple de bloc de configuration :
+### Slide 17/26 : tripwire - Création des fichiers
+* `twadmin --create-cfgfile -S /etc/tripwire/site.key \ /etc/tripwire/twcfg.txt`.
+* `twadmin --create-polfile -S /etc/tripwire/site.key \ /etc/tripwire/twpol.txt`.
 
-    Ini, TOML
+### Slide 18/26 : tripwire - Politique
+* Règles dans `/etc/tripwire/twpol.txt`:
+    /etc -> \$(SEC_BIN);
+    /etc/passwd -> \$(SEC_CONFIG);
+    /etc/shadow -> \$(SEC_CONFIG);
 
-    [DEFAULT] 
-    bantime = <long enough> 
-    findtime = <time during retry are counted> 
-    maxretry = <n> 
-    action = %(action_mw)s 
+### Slide 19/26 : tripwire - Initialisation
+* `tripwire --init` : Lance l'initialisation.
+* Emplacement BD : `/var/lib/tripwire/<host>.twd`.
 
-    [<service>] 
-    enabled = true 
+### Slide 20/26 : tripwire - Vérification
+* `tripwire --check` : Lancer la vérification.
+* Fichier de rapport : `/var/lib/tripwire/report/<host>-<date>.twr`.
+* `twprint -m r --twrfile /var/lib/tripwire/report/<host>-<date>.twr`.
 
-<b>recidive</b> : incrémente le bantime d'une IP
-récidiviste.
-
-
-### Commandes client & Firewall
-
-#### Client
-
-    fail2ban-client status : Affiche le statut général.  
-
-    fail2ban-client status <JAIL> : Affiche le statut d'une prison spécifique.  
-    
-    fail2ban-client set loglevel <LEVEL> : Modifie le niveau de log.  
-    
-    fail2ban-client get loglevel : Affiche le niveau de log actuel.  
-    
-    fail2ban-client set <JAIL> [un]banip <IP> : Bannit ou débannit manuellement une IP dans une prison. 
-    
-    fail2ban-client set <JAIL> <add|del> ignoreip <IP> : Ajoute ou retire une IP de la liste d'ignorance d'une prison.  
-
-#### Firewall
-    
-    iptables -L : Montre toutes les règles du firewall en cours (utile pour vérifier les actions de fail2ban).  
-
-## Tripwire (Slide 14-20) :
-
-### Intro 
-
-    $sha512sum /etc/hosts : Commande d'exemple pour calculer le hash d'un fichier.  
-
-### Génération des clés
-    
-    twadmin --generate-keys -L /etc/tripwire/<host>-local.key : Génère la clé locale.  
-    
-    twadmin --generate-keys -L /etc/tripwire/site.key : Génère la clé de site.  
-    
-### Fichiers sources
-
-- /etc/tripwire/twcfg.txt : Fichier source pour générer la BD chiffrée de configuration (tw.cfg).  
-
-- /etc/tripwire/twpol.txt : Fichier source pour générer la BD chiffrée des règles (tw.pol).  
-    
-### Création des bases chiffrées
-
-    twadmin --create-cfgfile -S /etc/tripwire/site.key \ /etc/tripwire/twcfg.txt : Crée le fichier de configuration chiffré.  
-
-    twadmin --create-polfile -S /etc/tripwire/site.key \ /etc/tripwire/twpol.txt : Crée le fichier de politique chiffré.  
-
-### Configuration des règles à surveiller :
-
-    Plaintext
-    /etc -> $(SEC_BIN); 
-    /etc/passwd -> $(SEC_CONFIG); 
-    /etc/shadow -> $(SEC_CONFIG); 
-
-### Initialisation
-
-    tripwire --init : Initialise la base de données des fichiers surveillés.  
-    
-- /var/lib/tripwire/<host>.twd : Emplacement où le fichier de base de données est créé.  
-
-### Vérification et lecture des rapports
-
-    tripwire --check : Lance une vérification d'intégrité. 
-
-    twprint -m r --twrfile /var/lib/tripwire/report/<host>-<date>.twr : Commande pour lire le rapport généré en clair.  
-
-- /var/lib/tripwire/report : Dossier contenant les rapports générés au format .twr.  
-
-
-## Portsentry (Slide 25) :
-
-### Dans le fichier /etc/portsentry/portsentry.conf:  
-    
-    BLOCK_UDP="1"   
-    BLOCK_TCP="1"   
-    KILL_RUN_CMD=/sbin/iptables   
-
-### Dans le fichier /etc/default/portsentry:  
-    
-    TCP_MODE="atcp"   
-    UDP_MODE="audp"   
+### Slide 25/26 : portsentry - Configuration
+* Dans `/etc/portsentry/portsentry.conf`:
+  * `BLOCK_UDP="1"`.
+  * `BLOCK_TCP="1"`.
+  * `KILL_RUN_CMD=/sbin/iptables`.
+* Dans `/etc/default/portsentry`:
+  * `TCP_MODE="atcp"`.
+  * `UDP_MODE="audp"`.
 
 <br>
 

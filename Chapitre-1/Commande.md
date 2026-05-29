@@ -1,48 +1,36 @@
-# Chapitre 1 : Première connexion (Commandes)
+# Chapitre 1 : Première connexion
 
-## MDP (Slide 3) :
-    
-    pwgen : Commande suggérée pour générer un mot de passe complexe.  
+### Slide 3/10 : Première fois... - user
+* `pwgen` : Commande suggérée pour générer un mot de passe complexe.
 
-## Connexion (Slide 4) :
-    ClientAliveInterval 300 : Fixe le wakeup (timeout) de la connexion.  
+### Slide 4/10 : Première fois... - Connexion ssh
+* `ClientAliveInterval 300` : Fixe le timeout de la connexion.
+* `ClientAliveCountMax 3` : Fixe le nombre de rappels avant déconnexion.
+* `PermitRootLogin no` : N'autorise pas de connexion directe en root.
+* `AllowUsers <your users>` : Précise le nom des comptes autorisés.
 
-    ClientAliveCountMax 3 : Fixe le nombre de rappels avant que l'utilisateur ne soit déconnecté.  
+### Slide 5/10 : Première fois... - sudo
+* `%sudo ALL=(ALL:ALL) ALL` : Ligne permettant d'ajouter l'utilisateur au groupe sudo.
+* `Defaults timestamp_timeout=0` : Ajouter cette ligne pour gérer le timeout.
 
-    PermitRootLogin no : N'autorise pas de connexion directe en root.  
-    
-    AllowUsers <your users> : Précise le nom des comptes autorisés à se connecter.  
+### Slide 6/10 : Première fois... - Déconnecter les utilisateurs inactifs
+* Fichier cible : `/etc/profile.d/timeout.sh`.
+* Lignes à y ajouter :
+  * `echo "Idle users will be removed after 15 minutes"`.
+  * `TMOUT=900`.
+  * `readonly TMOUT`.
+  * `export TMOUT`.
 
-## Sudo (Slide 5) :
+### Slide 7/10 : Première fois... - apt
+* Fichier cible : `sources.list`. (Préciser le nom d'une version comme `trixie` plutôt que `stable` ).
+* `ntp` : Exemple de paquet pour un serveur de temps.
 
-    %sudo ALL=(ALL:ALL) ALL : Ligne permettant d'ajouter l'utilisateur au groupe sudo.  
+### Slide 8/10 : Première fois... - Serveur de mails
+* Fichier cible : `/etc/aliases`.
+* Ligne à y ajouter : `root: me@example.org.`.
 
-    Defaults timestamp_timeout=0 : Configuration supplémentaire pour gérer le timeout de sudo.  
-
-## Timeout SSH (Slide 6):
-
-### Fichier cible : /etc/profile.d/timeout.sh   
-#### Lignes à y ajouter :
-
-        echo "Idle users will be removed after 15 minutes"   
-        TMOUT=900
-        readonly TMOUT      # Empêche un utilisateur de modifier la variable
-        export TMOUT        # Exporte la variable dans l'environnement de l'utilisateur
-
-## Installation (Slide 7) :
-
-    apt : Outil pour la gestion des paquets.  
-
-    Fichier cible : sources.list (Il est recommandé d'y préciser le nom d'une version comme trixie plutôt que stable ).  
-
-    ntp : Exemple de paquet à installer pour disposer d'un serveur de temps.  
-
-## Mail root (Slide 8) :
-
-    Fichier cible : /etc/aliases   
-
-    Ligne à y ajouter (pour que le serveur puisse envoyer les alertes root) :
-        root: me@example.org
+### Slide 9/10 : Première fois... - IDS / IPS
+* `fail2ban` : Au minimum pour le système de détection d'intrusions.
 
 <br>
 
