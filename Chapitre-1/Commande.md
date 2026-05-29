@@ -1,4 +1,4 @@
-# Chapitre 1 : Première connexion
+# Chapitre 1 : Première connexion (Commandes)
 
 ## Slide 3 :
 - pwgen : Commande suggérée pour générer un mot de passe complexe.  
@@ -39,5 +39,5 @@
 
 <p style="display:flex;justify-content:space-between;align-items:center;">
 <a href="../README.md">⬅️ Vers le readme</a> | 
-<a href="../Chapitre-2/Examen.md">Chapitre suivant ➡️</a>
+<a href="../Chapitre-2/Commande.md">Chapitre suivant ➡️</a>
 </p>

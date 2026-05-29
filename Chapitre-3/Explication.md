@@ -1,4 +1,4 @@
-# Chapitre 3 - Les emails
+# Chapitre 3 - Les emails 
 
 ### 1. Architecture globale d'un système de messagerie
 
@@ -89,6 +89,6 @@ Postfix est un serveur de messagerie (MTA) très courant sous Linux.
 <br>
 
 <p style="display:flex;justify-content:space-between;align-items:center;">
-<a href="../Chapitre-2/Examen.md">⬅️ Vers le chapitre précédent</a> | 
-<a href="../Chapitre-4/Examen.md">Chapitre suivant ➡️</a>
+<a href="../Chapitre-2/Explication.md">⬅️ Chapitre précédent</a> | 
+<a href="../Chapitre-4/Explication.md">Chapitre suivant ➡️</a>
 </p>
