@@ -1,3 +1,5 @@
+# Chapitre 2 : IDS|IPS
+
 ### 1. Concepts Fondamentaux : IDS et IPS
 
 Un système de détection d'intrusion (IDS) a pour rôle de repérer les activités anormales au sein d'un système et de lever une alerte. Lorsque ce système est capable de prendre des mesures actives pour bloquer la menace, il devient un système de prévention d'intrusion (IPS).
